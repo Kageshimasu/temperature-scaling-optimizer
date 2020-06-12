@@ -70,3 +70,5 @@ predictor = TemperatureScalePredictor(model, tempereture)
 inputs = torch.Tensor(34, 3, 32, 32)
 print(predictor(inputs))
 ```
+
+![Visualize Sample](https://github.com/Kageshimasu/tempreture-scaling-optimizer/blob/master/images/calibrated_result.png)
