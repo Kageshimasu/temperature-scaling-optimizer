@@ -47,7 +47,6 @@ To Visualize
 ```python
 from temp_opt.label_stores.predicting_table import PredictingTable
 from temp_opt.label_stores.simple_label_store import LogitsAndLabelsStore
-from temp_opt.predictors.simple_temperature_predictor import TemperatureScalePredictor
 from temp_opt.visualizers.calibration_plotter import CalibationPlotter
 
 model_dict = {
