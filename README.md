@@ -1,6 +1,6 @@
 # Temperature Scaling Optimizer
 
-Tempreture Scaling Optimizer is to calibrate your neural network and 
+Temperature Scaling Optimizer is to calibrate your neural network and 
 visualize how well-calibrated it in Pytorch.  
 This library is based on below pages.
 - [On Calibration of Modern Neural Networks](https://arxiv.org/abs/1706.04599).
@@ -65,10 +65,10 @@ To Predict with Temperature Scaling
 from temp_opt.predictors.simple_temperature_predictor import TemperatureScalePredictor
 
 model = models.resnet18(pretrained=True)
-tempereture = 5.32  # set an optimized tempreture value 
-predictor = TemperatureScalePredictor(model, tempereture)
+temperature = 5.32  # set an optimized temperature value 
+predictor = TemperatureScalePredictor(model, temperature)
 inputs = torch.Tensor(34, 3, 32, 32)
 print(predictor(inputs))
 ```
 
-![Visualize Sample](https://github.com/Kageshimasu/tempreture-scaling-optimizer/blob/master/images/calibrated_result.png)
+![Visualize Sample](https://github.com/Kageshimasu/temperature-scaling-optimizer/blob/master/images/calibrated_result.png)
