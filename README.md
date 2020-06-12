@@ -1,4 +1,4 @@
-# Tempreture Scaling Optimizer
+# Temperature Scaling Optimizer
 
 Tempreture Scaling Optimizer is to calibrate your neural network and 
 visualize how well-calibrated it in Pytorch.  
