@@ -1,5 +1,6 @@
 import torch
 import tqdm
+import cv2
 
 from temp_opt.label_stores.predicting_table import PredictingTable
 
@@ -27,7 +28,7 @@ class LogitsAndLabelsStore:
                         label = label.cuda()
                         model.cuda()
                     logit = model(input)
-                    if torch.sum(logit).item() == 1.0:
+                    if torch.sum(logit[0]).item() == 1.0:
                         print('WARNING: Check if you use softmax in your model')
                     logits_list.append(logit)
                     labels_list.append(label)
