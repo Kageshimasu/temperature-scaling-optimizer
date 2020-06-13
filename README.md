@@ -21,7 +21,10 @@ This library is based on below pages.
 <a name="installation"/>
 
 ## Installation
-UNDER CONSTRUCTION...
+```
+pip install -r requirements.txt
+```
+and you also install pytorch from [here](https://pytorch.org/)
 
 <a name="examples"/>
 
