@@ -24,7 +24,7 @@ This library is based on below pages.
 ```
 pip install -r requirements.txt
 ```
-and you also install pytorch from [here](https://pytorch.org/)
+And you also install pytorch from [here](https://pytorch.org/)
 
 <a name="examples"/>
 
@@ -46,6 +46,17 @@ lbfgs_opt = LBFGSOptimizer(label_store, TemperatureScaleTrainer())
 lbfgs_opt.run()
 ```
 
+To Predict with Temperature Scaling
+```python
+from temp_opt.predictors.simple_temperature_predictor import TemperatureScalePredictor
+
+model = models.resnet18(pretrained=True)
+temperature = 5.32  # set an optimized temperature value 
+predictor = TemperatureScalePredictor(model, temperature)
+inputs = torch.Tensor(34, 3, 32, 32)
+print(predictor(inputs))
+```
+
 To Visualize
 ```python
 from temp_opt.label_stores.predicting_table import PredictingTable
@@ -62,16 +73,5 @@ plotter = CalibationPlotter()
 plotter.plot(label_store)
 plt.show()
 ```
-
-To Predict with Temperature Scaling
-```python
-from temp_opt.predictors.simple_temperature_predictor import TemperatureScalePredictor
-
-model = models.resnet18(pretrained=True)
-temperature = 5.32  # set an optimized temperature value 
-predictor = TemperatureScalePredictor(model, temperature)
-inputs = torch.Tensor(34, 3, 32, 32)
-print(predictor(inputs))
-```
-
+You can visualize your neural network as in the diagram below
 ![Visualize Sample](https://github.com/Kageshimasu/temperature-scaling-optimizer/blob/master/images/calibrated_result.png)
