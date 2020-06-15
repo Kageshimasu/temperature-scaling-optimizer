@@ -2,7 +2,7 @@ import torch
 import tqdm
 import cv2
 
-from temp_opt.label_stores.predicting_table import PredictingTable
+from ..label_stores.predicting_table import PredictingTable
 
 
 class LogitsAndLabelsStore:

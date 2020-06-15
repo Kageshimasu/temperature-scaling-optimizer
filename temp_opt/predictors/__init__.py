@@ -1,0 +1,1 @@
+from .simple_temperature_predictor import TemperatureScalePredictor

@@ -1,9 +1,9 @@
 import torch
 from torch import nn, optim
 
-from temp_opt.label_stores.simple_label_store import LogitsAndLabelsStore
-from temp_opt.trainers.temperature_scale_trainer import TemperatureScaleTrainer
-from temp_opt.metrics.eceloss import ECELoss
+from ..label_stores.logits_and_labels_store import LogitsAndLabelsStore
+from ..trainers.temperature_scale_trainer import TemperatureScaleTrainer
+from ..metrics.eceloss import ECELoss
 
 
 class LBFGSOptimizer:

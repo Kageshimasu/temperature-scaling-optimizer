@@ -31,45 +31,43 @@ And you also install pytorch from [here](https://pytorch.org/)
 ## Examples
 To Optimize
 ```python
-from temp_opt.label_stores.predicting_table import PredictingTable
-from temp_opt.label_stores.simple_label_store import LogitsAndLabelsStore
-from temp_opt.trainers.temperature_scale_trainer import TemperatureScaleTrainer
-from temp_opt.optimizers.lbfgs_optimizer import LBFGSOptimizer
+import temp_opt as topt
 
 model_dict = {
         model_1: DataLoader_1,
         model_2: DataLoader_2,
         model_3: DataLoader_3
         }
-label_store = LogitsAndLabelsStore(PredictingTable(model_dict))
-lbfgs_opt = LBFGSOptimizer(label_store, TemperatureScaleTrainer())
+label_store = topt.label_stores.LogitsAndLabelsStore(topt.label_stores.PredictingTable(model_dict))
+lbfgs_opt = topt.optimizers.LBFGSOptimizer(label_store, topt.trainers.TemperatureScaleTrainer())
 lbfgs_opt.run()
 ```
 
 To Predict with Temperature Scaling
 ```python
-from temp_opt.predictors.simple_temperature_predictor import TemperatureScalePredictor
+import torch
+import torchvision.models as models
+import temp_opt as topt
 
 model = models.resnet18(pretrained=True)
 temperature = 5.32  # set an optimized temperature value 
-predictor = TemperatureScalePredictor(model, temperature)
+predictor = topt.predictors.TemperatureScalePredictor(model, temperature)
 inputs = torch.Tensor(34, 3, 32, 32)
 print(predictor(inputs))
 ```
 
 To Visualize
 ```python
-from temp_opt.label_stores.predicting_table import PredictingTable
-from temp_opt.label_stores.simple_label_store import LogitsAndLabelsStore
-from temp_opt.visualizers.calibration_plotter import CalibationPlotter
+import matplotlib.pyplot as plt
+import temp_opt as topt
 
 model_dict = {
         model_1: DataLoader_1,
         model_2: DataLoader_2,
         model_3: DataLoader_3
         }
-label_store = LogitsAndLabelsStore(PredictingTable(model_dict))
-plotter = CalibationPlotter()
+label_store = topt.label_stores.LogitsAndLabelsStore(topt.label_stores.PredictingTable(model_dict))
+plotter = topt.visualizers.CalibationPlotter()
 plotter.plot(label_store)
 plt.show()
 ```

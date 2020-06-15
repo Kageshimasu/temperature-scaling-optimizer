@@ -2,12 +2,13 @@ import torch
 import numpy as np
 from matplotlib import pyplot as plt
 from torch.nn import functional as F
-from temp_opt.label_stores.simple_label_store import LogitsAndLabelsStore
+
+from ..label_stores.logits_and_labels_store import LogitsAndLabelsStore
 
 
 class CalibationPlotter:
     _X = 'confidence'
-    _Y = 'accuracy'
+    _Y = 'mean accuracy'
 
     def __init__(self, n_bins=15):
         self._n_bins = n_bins
@@ -24,9 +25,12 @@ class CalibationPlotter:
         ece = 0
         name_list = []
         accuracy_list = []
-        calibrated_list = []
+        gap_list = []
 
         for bin_lower, bin_upper in zip(self.bin_lowers, self.bin_uppers):
+            gap_list.append((bin_lower.item() + bin_upper.item()) / 2)
+            name_list.append('[{}, {}]'.format(round(bin_lower.item(), 2), round(bin_upper.item(), 2)))
+
             in_bin = confidences.gt(bin_lower.item()) * confidences.le(bin_upper.item())
             prop_in_bin = in_bin.float().mean()
             if prop_in_bin.item() > 0:
@@ -34,12 +38,10 @@ class CalibationPlotter:
                 avg_confidence_in_bin = confidences[in_bin].mean()
                 ece += (torch.abs(avg_confidence_in_bin - accuracy_in_bin) * prop_in_bin).item()
                 accuracy_list.append(accuracy_in_bin)
-                calibrated_list.append((bin_lower.item() + bin_upper.item()) / 2)
-                name_list.append('[{}, {}]'.format(round(bin_lower.item(), 2), round(bin_upper.item(), 2)))
         well_calibrated_x = np.linspace(0, self._n_bins, 100)
         well_calibrated_y = np.linspace(0, 1.0, 100)
-        ax.bar(name_list, calibrated_list, color='salmon', edgecolor='r', linewidth=3, alpha=0.7, label='Gap')
-        ax.bar(name_list, accuracy_list, color='b', label='Outputs')
+        ax.bar(name_list, gap_list, color='salmon', edgecolor='r', linewidth=3, alpha=0.7, label='Gap')
+        ax.bar(name_list, accuracy_list, color='b', label='Observed')
         ax.plot(well_calibrated_x, well_calibrated_y, color="grey", linewidth=3.0, linestyle='dashed')
         t = ax.text(0.4, 0.05, 'ERROR=' + str(round(ece, 2)), transform=ax.transAxes, fontsize=30)
         t.set_bbox(dict(facecolor='white', alpha=0.5, edgecolor='grey'))
