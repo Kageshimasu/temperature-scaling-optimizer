@@ -26,15 +26,18 @@ class LBFGSOptimizer:
         self._trainer = temperature_scaler
         self.temperature = self._trainer.get_parameters()
         self._optimizer = optim.LBFGS([self._trainer.get_parameters()], lr=lr, max_iter=max_iter)
-        self._criterion = criterion()
+        self._ce_criterion = criterion()
+        self._ece_criterion = ECELoss()
         if torch.cuda.is_available():
-            self._criterion.cuda()
+            self._ce_criterion.cuda()
 
     def run(self):
-        logits, labels = self._label_store.predict_all()
+        logits, labels = self._label_store.get_logits_and_labels()
 
         def _target_func():
-            loss = self._criterion(self._trainer(logits), labels)
+            ce_loss = self._ce_criterion(self._trainer(logits), labels)
+            ece_loss = self._ece_criterion(self._trainer(logits), labels)
+            loss = ece_loss * 1e+2 + ce_loss * 1e-2 + torch.abs(self._trainer.get_parameters()) * 1e-1
             loss.backward()
             return loss
 
@@ -48,8 +51,7 @@ class LBFGSOptimizer:
         return self._trainer.get_temperature()
 
     def _evaluate(self, logits, labels):
-        ece_criterion = ECELoss()
         with torch.no_grad():
-            current_loss = float(self._criterion(self._trainer(logits), labels))
-            current_cecloss = float(ece_criterion(self._trainer(logits), labels))
+            current_loss = float(self._ce_criterion(logits, labels))
+            current_cecloss = float(self._ece_criterion(logits, labels))
         return current_loss, current_cecloss

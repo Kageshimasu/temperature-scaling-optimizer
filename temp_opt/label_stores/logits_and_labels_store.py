@@ -1,6 +1,6 @@
 import torch
 import tqdm
-import cv2
+from typing import Tuple
 
 from ..label_stores.predicting_table import PredictingTable
 
@@ -12,11 +12,12 @@ class LogitsAndLabelsStore:
         :param predicting_table:
         """
         self._predicting_table = predicting_table
+        self._logits, self._labels = self._predict_all()
 
-    def predict_all(self):
-        """
-        :return:
-        """
+    def get_logits_and_labels(self) -> Tuple[torch.Tensor, torch.Tensor]:
+        return self._logits, self._labels
+
+    def _predict_all(self) -> Tuple[torch.Tensor, torch.Tensor]:
         logits_list = []
         labels_list = []
         i = 0

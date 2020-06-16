@@ -17,7 +17,11 @@ class CalibationPlotter:
         self.bin_uppers = bin_boundaries[1:]
 
     def plot(self, label_store: LogitsAndLabelsStore):
-        logits, labels = label_store.predict_all()
+        """
+        :param label_store:
+        :return:
+        """
+        logits, labels = label_store.get_logits_and_labels()
         softmaxes = F.softmax(logits, dim=1)
         confidences, predictions = torch.max(softmaxes, 1)
         accuracies = predictions.eq(labels)
@@ -38,6 +42,8 @@ class CalibationPlotter:
                 avg_confidence_in_bin = confidences[in_bin].mean()
                 ece += (torch.abs(avg_confidence_in_bin - accuracy_in_bin) * prop_in_bin).item()
                 accuracy_list.append(accuracy_in_bin)
+            else:
+                accuracy_list.append(0)
         well_calibrated_x = np.linspace(0, self._n_bins, 100)
         well_calibrated_y = np.linspace(0, 1.0, 100)
         ax.bar(name_list, gap_list, color='salmon', edgecolor='r', linewidth=3, alpha=0.7, label='Gap')
@@ -50,4 +56,3 @@ class CalibationPlotter:
         ax.set_ylabel(self._Y)
         ax.set_xlim([0.0, self._n_bins])
         ax.set_ylim([0.0, 1.0])
-
