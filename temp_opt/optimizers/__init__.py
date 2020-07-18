@@ -1,1 +1,2 @@
 from .lbfgs_optimizer import LBFGSOptimizer
+from .optuna_optimizer import OptunaOptimizer

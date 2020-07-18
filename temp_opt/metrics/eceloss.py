@@ -1,9 +1,10 @@
 import torch
-import torch.nn as nn
 from torch.nn import functional as F
 
+from ..base.base_metric import BaseMetric
 
-class ECELoss(nn.Module):
+
+class ECELoss(BaseMetric):
     """
     Calculates the Expected Calibration Error of a model.
     (This isn't necessary for temperature scaling, just a cool metric).

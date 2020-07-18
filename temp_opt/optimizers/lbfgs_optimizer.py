@@ -37,7 +37,7 @@ class LBFGSOptimizer:
         def _target_func():
             ce_loss = self._ce_criterion(self._trainer(logits), labels)
             ece_loss = self._ece_criterion(self._trainer(logits), labels)
-            loss = ece_loss * 1e+2 + ce_loss * 1e-2 + torch.abs(self._trainer.get_parameters()) * 1e-1
+            loss = ece_loss  # ece_loss * 1e+2 + ce_loss # * 1e-2  # + torch.abs(self._trainer.get_parameters()) * 1e-1
             loss.backward()
             return loss
 

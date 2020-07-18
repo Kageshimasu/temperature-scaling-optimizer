@@ -21,6 +21,7 @@ class LogitsAndLabelsStore:
         logits_list = []
         labels_list = []
         i = 0
+        t = 0
         with torch.no_grad():
             for model, val_loader in self._predicting_table:
                 for input, label in tqdm.tqdm(val_loader):
@@ -32,7 +33,13 @@ class LogitsAndLabelsStore:
                     if torch.sum(logit[0]).item() == 1.0:
                         print('WARNING: Check if you use softmax in your model')
                     logits_list.append(logit)
-                    labels_list.append(label)
+                    if len(label.shape) == 2:
+                        labels_list.append(torch.argmax(label, dim=1))
+                    else:
+                        labels_list.append(label)
+                    t += 1
+                    # if t > 1000:
+                    #     break
                 i += 1
             logits = torch.cat(logits_list).cuda()
             labels = torch.cat(labels_list).cuda()
