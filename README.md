@@ -2,7 +2,7 @@
 
 Temperature Scaling Optimizer is to calibrate your neural network and 
 visualize how well-calibrated it in Pytorch.  
-This library is based on below pages.
+This library is based on the below papers.
 - [On Calibration of Modern Neural Networks](https://arxiv.org/abs/1706.04599).
 - [temperature_scaling](https://github.com/gpleiss/temperature_scaling)
 
