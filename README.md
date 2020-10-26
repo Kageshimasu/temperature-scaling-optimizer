@@ -16,7 +16,7 @@ This library is based on below pages.
 
 ## Features
 * Optimize for calibrating your neural network compatible with Cross Validation
-* Visualize how well-calibrated your neural network
+* Visualize how well-calibrated your neural network is
 
 <a name="installation"/>
 
